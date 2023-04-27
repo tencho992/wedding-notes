@@ -1,5 +1,5 @@
-var bride = document.getElementsByClassName("ria");
-var groom = document.getElementsByClassName("panos");
+var bride = document.getElementById("bride");
+var groom = document.getElementById("groom");
 
 var trash = document.getElementsByClassName("fa-trash");
 
