@@ -5,60 +5,111 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=GFS+Neohellenic&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="container">
-
     <div class="page-header text-center">
-        <h1><span class="fa fa-gift"></span> Guest Book</h1>
-        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+      <h1>Παναγιωτης και Ελευθερια</h1>
+      <p>30 Απριλίου 2023</p>
+      <p>April 30 2023</p>
     </div>
-
     <div class="row">
 
         <!-- row display -->
         <div class="col-sm-6">
           <div class="well">
-            <h2>Add a message</h2>
-            <form action="/messages" method="POST">
-              <input type="text" placeholder="Name" name="name">
-              <textarea rows="6" cols="30" placeholder="write message here..." name="msg"></textarea>
-
-              <!-- <input id="longMessage" type="text" placeholder="Message" name="msg"> -->
-              <p><button type="submit">Submit</button></p>
-            </form>
-          </div>
-        </div>
-        <div class="col-sm-6">     
-          <h3>Messages</h3>
-          <ul class="messages">
-            <% for(var i=0; i<messages.length; i++) {%>
-              <li class="message">
-                <span><%= messages[i].name %>:</span>
-                <span><%= messages[i].msg %></span>
-                <p>
-                <img src="img/ria.ico" id="bride">
-                <img src="img/pano.ico" id="groom">
-                </p>
-                <span><i class="fa fa-trash" aria-hidden="true"></i></span>
-              </li>
-            <% } %>
-          </ul>
-        </div>
-</div>
-
-<script src="main.js"></script>
-
-</body>
-</html>
-<!-- <h3><span class="fa fa-user"></span> Local</h3>
+        <div id="design">
+            <h3><span class="fa fa-gift"></span> χρήστη</h3>
 
 <% if (user.local.email) { %>
     <p>
         <strong>email</strong>: <%= user.local.email %><br>
     </p>
+    <a href="/logout" class="btn btn-default btn-sm">Αποσύνδεση</a>
 
-    <a href="/unlink/local" class="btn btn-default">Unlink</a>
-<% } else { %>
-    <a href="/connect/local" class="btn btn-default">Connect Local</a>
-<% } %> -->
+<% } %>
+</div>
+<div class="space-between">
+<h1>γράψτε ένα μήνυμα στο βιβλίο επισκεπτών</h1>
+
+            <form action="/messages" method="POST">
+              <input type="text" placeholder="όνομα" name="name">
+              <textarea rows="6" cols="30" placeholder="Ξεκινήστε να πληκτρολογείτε μήνυμα.." name="msg"></textarea>
+              <p><button type="submit">Θέση</button></p>
+            </form>
+          </div>
+          </div>
+        </div>
+        <ul class="messages">
+          <% for(var i=0; i<messages.length; i++) {%>
+            
+            <li class="message">
+        <% if(messages[i].ria=== false && messages[i].panos === false){ %>
+              
+              <span><%= messages[i].name %></span>
+              <span><%= messages[i].msg %></span>
+              <img class="bride" src="img/ria.ico">
+              <img class="groom" src="img/pano.ico">
+
+            </li>
+          <% } %>
+          <% } %>
+          </ul>
+        </div>
+        <div class="row">
+        <div id="riaSide">
+          <h3 id="mrsp">μηνύματα στην Ελευθερία</h3>
+        <ul class="messages">
+        
+          <% for(var i=0; i<riaSide.length; i++) {%>
+            
+            <li class="message">
+              
+              <span><%= riaSide[i].name %></span>
+              <span><%= riaSide[i].msg %></span>
+      
+            </li>
+          <% } %>
+          </ul>
+        </div>
+        <div id="panosSide">
+          <h3 id="mrp">μηνύματα στον Πανός</h3>
+          <ul class="messages">
+          
+            <% for(var i=0; i<panosSide.length; i++) {%>
+              
+              <li class="message">
+                
+                <span><%= panosSide[i].name %></span>
+                <span><%= panosSide[i].msg %></span>
+      
+              </li>
+            <% } %>
+            </ul>
+          </div>
+        </div>
+        <div id="about">
+          <img src="img/panosria.jpeg" id="couple">
+          <p>παρακαλώ μεταφράστε το στα ελληνικά: Οι λέξεις δεν μπορούν 
+            να εκφράσουν τη βαθιά μας ευγνωμοσύνη που ήρθατε μαζί μας την 
+            ημέρα του γάμου μας. Η παρουσία σας φώτισε την ατμόσφαιρα με 
+            ζεστασιά και αγάπη, δημιουργώντας μια αξέχαστη εμπειρία για εμάς 
+            και όλους τους καλεσμένους μας. Είμαστε πολύ ευγνώμονες για την αγάπη, 
+            την υποστήριξη και τις καλές ευχές που μας δείξατε. Η παρουσία σας έκανε την 
+            ένωση μας ακόμα πιο ουσιαστική και χαρούμενη. Ελπίζουμε ότι οι αναμνήσεις που 
+            δημιουργήσαμε μαζί θα έχουν για πάντα μια ξεχωριστή θέση στις καρδιές σας. 
+            Σας ευχαριστούμε που είστε μέρος του ταξιδιού μας και που κάνατε την 
+            ημέρα του γάμου μας μια εξαιρετική γιορτή αγάπης.
+             Η παρουσία σας σήμαινε τον κόσμο για εμάς.</p>
+        </div>
+<footer>
+  <p>The Eleftheria and Panagiotis Wedding on April 30, 2023</p>
+  <p>Ο γάμος Ελευθερίας και Παναγιώτη στις 30 Απριλίου 2023</p>
+</footer>
+<script src="main.js"></script>
+
+</body>
+</html>

@@ -10,10 +10,16 @@ module.exports = function(app, passport, db) {
     // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, function(req, res) {
         db.collection('notes').find().toArray((err, result) => {
+          let riaSide = result.filter(item => item.ria === true)
+          let panosSide = result.filter(item => item.panos === true)
           if (err) return console.log(err)
           res.render('profile.ejs', {
             user : req.user,
-            messages: result
+            messages: result,
+            ria : false,
+            panos: false,
+            riaSide: riaSide,
+            panosSide : panosSide
           })
         })
     });
@@ -29,7 +35,8 @@ module.exports = function(app, passport, db) {
 // message board routes ===============================================================
 
     app.post('/messages', (req, res) => {
-      db.collection('notes').save({name: req.body.name, msg: req.body.msg, thumbUp: 0, thumbDown:0}, (err, result) => {
+      console.log('0')
+      db.collection('notes').save({name: req.body.name, msg: req.body.msg, ria: false, panos: false, riaSide: req.body.ria, panosSide: req.body.panos}, (err, result) => {
         if (err) return console.log(err)
         console.log('saved to database')
         res.redirect('/profile')
@@ -37,10 +44,10 @@ module.exports = function(app, passport, db) {
     })
 
     app.put('/messages', (req, res) => {
-      db.collection('notes')
-      .findOneAndUpdate({name: req.body.name, msg: req.body.msg}, {
+      console.log(req.body)
+      db.collection('notes').findOneAndUpdate({name: req.body.name, msg: req.body.msg}, {
         $set: {
-          thumbUp:req.body.thumbUp + 1
+          ria : true
         }
       }, {
         sort: {_id: -1},
@@ -50,41 +57,22 @@ module.exports = function(app, passport, db) {
         res.send(result)
       })
     })
-    app.put('/messages/thumbDown', (req, res) => {
-      db.collection('notes')
-      .findOneAndUpdate(
-        { name: req.body.name, msg: req.body.msg },
-        { $inc: { thumbUp: -1 } },
-        { sort: { _id: -1 }, upsert: true },
-        (err, result) => {
-          if (err) return res.send(err)
-          res.send(result)
+    app.put('/messages/panos', (req, res) => {
+      console.log('2')
+      db.collection('notes').findOneAndUpdate({name: req.body.name, msg: req.body.msg}, {
+        $set: {
+          panos: true
         }
-      )
-    })
-    
-    // app.put('/messages', (req, res) => {
-    //   db.collection('messages')
-    //   .findOneAndUpdate({name: req.body.name, msg: req.body.msg}, {
-    //     $set: {
-    //       thumbUp:req.body.thumbUp - 1
-    //     }
-    //   }, {
-    //     sort: {_id: -1},
-    //     upsert: true
-    //   }, (err, result) => {
-    //     if (err) return res.send(err)
-    //     res.send(result)
-    //   })
-    // })
-
-    app.delete('/messages', (req, res) => {
-      db.collection('notes').findOneAndDelete({name: req.body.name, msg: req.body.msg}, (err, result) => {
-        if (err) return res.send(500, err)
-        res.send('Message deleted!')
+      }, {
+        sort: {_id: -1},
+        upsert: true
+      }, (err, result) => {
+        if (err) return res.send(err)
+        res.send(result)
       })
     })
 
+    
 // =============================================================================
 // AUTHENTICATE (FIRST LOGIN) ==================================================
 // =============================================================================

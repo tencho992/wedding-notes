@@ -1,71 +1,59 @@
-var bride = document.getElementById("bride");
-var groom = document.getElementById("groom");
+var bride = document.querySelectorAll(".bride");
+var groom = document.querySelectorAll(".groom");
 
-var trash = document.getElementsByClassName("fa-trash");
+console.log(bride)
+console.log(groom)
+
 
 Array.from(bride).forEach(function(element) {
-      element.addEventListener('click', function(){
-        const name = this.parentNode.parentNode.childNodes[1].innerText
-        const msg = this.parentNode.parentNode.childNodes[3].innerText
-        const thumbUp = parseFloat(this.parentNode.parentNode.childNodes[5].innerText)
-        fetch('messages', {
-          method: 'put',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            'name': name,
-            'msg': msg,
-            'thumbUp':thumbUp
-          })
-        })
-        .then(response => {
-          if (response.ok) return response.json()
-        })
-        .then(data => {
-          console.log(data)
-          window.location.reload(true)
-        })
-      });
-});
-Array.from(groom).forEach(function(element) {
   element.addEventListener('click', function(){
-    const name = this.parentNode.parentNode.childNodes[1].innerText
-    const msg = this.parentNode.parentNode.childNodes[3].innerText
-    const thumbDown = parseFloat(this.parentNode.parentNode.childNodes[9].innerText)
-    // const thumbDown = parseFloat(this.parentNode.parentNode.childNodes[9].innerText)
-
-    fetch('messages/thumbDown', {
+    console.log(this)
+    const name = this.parentNode.childNodes[1].innerText
+    const msg = this.parentNode.childNodes[3].innerText
+    fetch('messages', {
       method: 'put',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         'name': name,
         'msg': msg,
-        'thumbDown':thumbDown
       })
     })
     .then(response => {
-      if (response.ok) return response.json()
+      if (response.ok){
+        console.log('hey its working')
+        response.json()
+      }
     })
     .then(data => {
       console.log(data)
       window.location.reload(true)
     })
-  });
-});
-Array.from(trash).forEach(function(element) {
-      element.addEventListener('click', function(){
-        const name = this.parentNode.parentNode.childNodes[1].innerText
-        const msg = this.parentNode.parentNode.childNodes[3].innerText
-        fetch('messages', {
-          method: 'delete',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            'name': name,
-            'msg': msg
-          })
-        }).then(function (response) {
-          window.location.reload()
-        })
-      });
-});
+  })
+})
+  
+
+Array.from(groom).forEach(function(element) {
+  element.addEventListener('click', function(){
+    console.log(this)
+    const name = this.parentNode.childNodes[1].innerText
+    const msg = this.parentNode.childNodes[3].innerText
+    fetch('/messages/panos', {
+      method: 'put',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        'name': name,
+        'msg': msg,
+      })
+    })
+    .then(response => {
+      if (response.ok){
+        console.log('hey its working')
+        response.json()
+      }
+    })
+    .then(data => {
+      console.log(data)
+      window.location.reload(true)
+    })
+  })
+})
